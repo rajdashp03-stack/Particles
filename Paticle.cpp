@@ -57,21 +57,54 @@ void Particle::draw(RenderTarget& target, RenderStates states) const {
 
 void Particle::update(float dt) {
 
+    m_ttl -= dt;
+    this->rotate(dt * m_radiansPerSec);
+    this->scale(SCALE);
+
+    float dx;
+    float dy;
+
+    dx = m_vx * dt;
+    m_vy -= G * dt;
+    dy = m_vy * dt;
+
+    this->translate(dx, dy);
 }
 
 void Particle::rotate(double theta) {
 
+    Vector2f temp = m_centerCoordinate;
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+
+    Matrices::RotationMatrix R(theta);
+
+    m_A = R * m_A;
+
+    translate(temp.x, temp.y);
 
 }
 
 void Particle::scale(double c) {
 
+    Vector2f temp = m_centerCoordinate;
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
 
+    Matrices::ScalingMatrix S(c);
+
+    m_A = S * m_A;
+
+    translate(temp.x, temp.y);
 }
 
 void Particle::translate(double xShift, double yShift) {
 
+    Matrices::TranslationMatrix T(xShift, yShift, m_numPoints);
 
+    m_A = T + m_A;
+
+    //Shift center coordinates
+    m_centerCoordinate.x += xShift;
+    m_centerCoordinate.y += yShift;
 }
 
 bool Particle::almostEqual(double a, double b, double eps)
