@@ -69,13 +69,17 @@ namespace Matrices {
 
     Matrix operator*(const Matrix& a, const Matrix& b) {
 
-        Matrix c(a.getRows(), a.getCols());
+        Matrix c(a.getRows(), b.getCols());
 
         for (size_t i = 0; i < a.getRows(); ++i) {
 
-            for (size_t j = 0; j < a.getCols(); ++j) {
+            for (size_t j = 0; j < b.getCols(); ++j) {
 
-                c(i, j) = a(i, j) * b(i, j);
+                c(i, j) = 0;
+                for (size_t x = 0; x < a.getCols(); ++x) {
+
+                    c(i, j) = c(i, j) + (a(i, x) * b(x, j));
+                }
             }
         }
 

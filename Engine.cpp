@@ -50,7 +50,7 @@ void Engine::input() {
 
 				for (size_t i = 0; i < 5; ++i) {
 
-					Particle(m_Window, ((rand() % 26) + 25), Mouse::getPosition());
+					m_particles.push_back(Particle(m_Window, ((rand() % 26) + 25), Mouse::getPosition()));
 				}
 			}
 		}
